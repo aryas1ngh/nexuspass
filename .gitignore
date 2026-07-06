@@ -1,0 +1,11 @@
+# Ignore everything at repo root by default …
+/*
+
+# … then allow only the deliverables we want to publish
+!/.gitignore
+!/slides/
+!/15_NexusPass_DATA_COLLECTION.pdf
+!/15_NexusPass_MILESTONE1_SLIDES.pdf
+
+# never track these anywhere
+.DS_Store
