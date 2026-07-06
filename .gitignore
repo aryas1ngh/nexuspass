@@ -3,6 +3,7 @@
 
 # … then allow only the deliverables we want to publish
 !/.gitignore
+!/.github/
 !/slides/
 !/15_NexusPass_DATA_COLLECTION.pdf
 !/15_NexusPass_MILESTONE1_SLIDES.pdf
