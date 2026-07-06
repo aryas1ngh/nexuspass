@@ -190,13 +190,12 @@ Severity meters, highest first:
 2. Open one flagship-venue pilot conversation.
 3. Build a break-even unit-economics model.
 
-### 18 · Anticipated Q&A (Appendix — team reference, not for presenting)
-- **Different from BookMyShow?** They stop at the gate. We own the in-venue journey + a B2B dashboard.
-- **Why another app?** They don't — NexusPass IS the ticket; the organizer mandates it.
-- **BLE too expensive?** ₹2–8L per venue vs. ₹5–50 Cr production cost — trivial.
-- **First customers?** Organizers first; attendees follow when they deploy us.
-- **Privacy?** Anonymized, aggregated only; never sold. DPDP-compliant.
-- **Why present without validation?** M2 asks for honest thinking — a real test plan beats a fake result.
+### 18 · Thank You
+**Thank You** — Questions & Discussion
+NexusPass · Group 15 — ENT307, Marketing of Services
+
+> The anticipated-Q&A appendix is kept in `index.html` but **commented out** (team reference, not presented):
+> BookMyShow difference · why another app · BLE cost · first customers · privacy.
 
 ---
 
