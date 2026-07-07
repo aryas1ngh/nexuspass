@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexusPass — Interactive Prototype</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ============ TOP TOOLBAR ============ -->
+    <header class="toolbar">
+      <div class="brand">
+        <img src="assets/nexuspass.png" alt="NexusPass" />
+        <span class="tag"><b>Interactive Prototype</b> · Milestone 2 walkthrough</span>
+      </div>
+      <div class="mode-switch" id="modeSwitch">
+        <button data-mode="attendee" class="active"><span class="ic">📱</span> Attendee app</button>
+        <button data-mode="organizer"><span class="ic">📊</span> Organizer dashboard</button>
+      </div>
+      <button class="play-btn" id="playBtn"><span class="pic">▶</span> <span id="playLbl">Auto-play</span></button>
+      <div class="sim-note"><span class="dot"></span> Prototype · simulated data</div>
+    </header>
+    <div id="autoProgress"><div class="fill" id="autoBar"></div></div>
+
+    <!-- ============ STAGE ============ -->
+    <div class="stage-wrap">
+      <div class="stage">
+
+        <!-- ---------- ATTENDEE MODE ---------- -->
+        <section class="mode-panel attendee active" id="panel-attendee">
+          <div class="attendee-stage">
+            <div class="phone-scale" id="phoneScale">
+              <div class="phone">
+                <div class="phone-screen">
+                  <div class="status-bar">
+                    <span class="sig">9:41</span>
+                    <span>📶 &nbsp; 🔋</span>
+                  </div>
+                  <div class="app-head">
+                    <span class="np"><span class="mk">N</span> NexusPass</span>
+                    <span class="ev">Coldplay · Music of the Spheres<br>DY Patil Stadium · Tonight</span>
+                  </div>
+
+                  <div class="screens" id="screens">
+
+                    <!-- SCREEN 1 — Unified Pass -->
+                    <div class="screen active" data-screen="0">
+                      <h2>Your pass is ready</h2>
+                      <p class="lead">Everything for tonight, in one place.</p>
+                      <div class="p-card teal">
+                        <div class="qr-wrap">
+                          <div class="qr" id="qr1" style="display:none"></div>
+                          <div id="pass1" style="text-align:center">
+                            <div style="font-size:34px">🎟️</div>
+                            <div class="v big" style="margin-top:4px">All-Access Pass</div>
+                          </div>
+                          <div class="lbl">North Stand · Block C · Row 12 · Seat 8</div>
+                        </div>
+                      </div>
+                      <div class="chips">
+                        <span class="chip-s teal">🎟️ Entry</span>
+                        <span class="chip-s teal">🅿️ Parking</span>
+                        <span class="chip-s teal">🧭 Indoor map</span>
+                        <span class="chip-s teal">🚪 Smart exit</span>
+                      </div>
+                      <div class="actions">
+                        <button class="btn primary" data-action="showQR">View my pass</button>
+                        <div class="hotspot-hint">Tap to reveal your entry QR</div>
+                      </div>
+                    </div>
+
+                    <!-- SCREEN 2 — Parking Allocated -->
+                    <div class="screen" data-screen="1">
+                      <h2>Parking reserved</h2>
+                      <p class="lead">We've held a bay close to your stand.</p>
+                      <div class="p-card teal">
+                        <div class="row"><span style="font-size:22px">🅿️</span>
+                          <div><div class="k">Your bay</div><div class="v big">Level 2 · Bay 44</div></div>
+                        </div>
+                        <div class="mini"><b>8 min away</b> · gate opens automatically with your pass · 4 min walk to your seat</div>
+                      </div>
+                      <div class="app-alert info-teal">
+                        <span class="ai">🅿️</span>
+                        <div><div class="t">Bay held until 20 min after the show</div>
+                          <div class="d">No searching — we'll guide you straight in and straight out.</div></div>
+                      </div>
+                      <div class="actions">
+                        <button class="btn primary" data-action="next">Navigate to parking</button>
+                        <div class="hotspot-hint">Turn-by-turn to Bay 44</div>
+                      </div>
+                    </div>
+
+                    <!-- SCREEN 3 — Entry Scan -->
+                    <div class="screen" data-screen="2">
+                      <h2>Tap to enter</h2>
+                      <p class="lead">Hold your phone at the gate — that's it.</p>
+                      <div class="p-card teal" style="align-items:center">
+                        <div class="qr" style="margin:4px auto"></div>
+                        <div id="scanState" class="v" style="text-align:center">Hold your pass at <b>Gate 3</b></div>
+                      </div>
+                      <div class="app-alert" id="alert-scan" style="display:none">
+                        <span class="ai">🛟</span>
+                        <div><div class="t">Gate 3 is busy right now</div>
+                          <div class="d">We've opened a fast lane at <b>Gate 3B</b> and held your place — head there, you won't re-queue.</div></div>
+                      </div>
+                      <div class="actions">
+                        <button class="btn primary" data-action="scan">Scan now</button>
+                      </div>
+                    </div>
+
+                    <!-- SCREEN 4 — Live Navigation -->
+                    <div class="screen" data-screen="3">
+                      <h2>Directions to your seat</h2>
+                      <p class="lead">Live indoor guidance through the crowd to Block C.</p>
+                      <div class="nav-map" id="navMap">
+                        <div class="zone" style="left:14px;top:12px;width:70px;height:34px">Gate 5</div>
+                        <div class="zone" style="right:16px;top:52px;width:78px;height:40px">Concourse</div>
+                        <div class="zone" style="left:20px;bottom:52px;width:76px;height:36px">Food Ct</div>
+                        <div class="route"></div>
+                        <div class="me"></div>
+                        <div class="dest">🎯</div>
+                      </div>
+                      <div class="p-card">
+                        <div class="mini" id="navMsg"><b>Concourse busy</b> — routing you via Gate 5 · 3 min to your seat</div>
+                      </div>
+                      <div class="app-alert" id="alert-nav" style="display:none">
+                        <span class="ai">🧭</span>
+                        <div><div class="t">Weak signal here — switched to GPS</div>
+                          <div class="d">Keep straight <b>40 m</b>, then turn left. You'll be back on indoor guidance shortly.</div></div>
+                      </div>
+                      <div class="actions">
+                        <button class="btn primary" data-action="next">I've reached my seat</button>
+                      </div>
+                    </div>
+
+                    <!-- SCREEN 5 — Engage -->
+                    <div class="screen" data-screen="4">
+                      <h2>Enjoy the show</h2>
+                      <p class="lead">Vote, find your group, catch live moments.</p>
+                      <div class="p-card teal poll" id="poll">
+                        <div class="k">Live · vote the encore</div>
+                        <div class="opt" data-vote="0"><span class="fill"></span><span>Fix You</span><span class="pct">58%</span></div>
+                        <div class="opt" data-vote="1"><span class="fill"></span><span>Yellow</span><span class="pct">27%</span></div>
+                        <div class="opt" data-vote="2"><span class="fill"></span><span>Paradise</span><span class="pct">15%</span></div>
+                      </div>
+                      <div class="p-card">
+                        <div class="row"><span style="font-size:18px">👥</span><div class="v" style="margin:0">Find my group</div></div>
+                        <div class="mini">North Stand <b>82% full</b> · shortest refreshment queue right now: <b>East concourse</b>.</div>
+                      </div>
+                      <div class="actions">
+                        <button class="btn primary" data-action="next">Set up my exit</button>
+                      </div>
+                    </div>
+
+                    <!-- SCREEN 6 — Smart Exit -->
+                    <div class="screen" data-screen="5">
+                      <h2>Your way out</h2>
+                      <p class="lead">Skip the rush — a route and a time made just for you.</p>
+                      <div class="push">
+                        <span class="ic">🎉</span>
+                        <div><div class="t">Great show. Your exit is ready.</div>
+                          <div class="d" id="exitMsg">Exit window <b>10:42 PM</b> · Route B avoids the North gridlock · your car is pre-notified.</div></div>
+                      </div>
+                      <span class="wave-tag" id="waveChip" style="display:none">🚦 You're in Wave 2 · 10:46 PM</span>
+                      <div class="p-card teal">
+                        <div class="row"><span style="font-size:20px">🚗</span><div class="v" style="margin:0">Car retrieval pre-notified</div></div>
+                        <div class="mini">Head out when your window opens — the walk is timed so you never hit a wall of people.</div>
+                      </div>
+                      <div class="actions">
+                        <button class="btn amber" data-action="next">Head to my car</button>
+                      </div>
+                    </div>
+
+                    <!-- SCREEN 7 — Parking Retrieval -->
+                    <div class="screen" data-screen="6">
+                      <h2>Straight to your car</h2>
+                      <p class="lead">No wandering a dark lot — the pass remembers where you parked.</p>
+                      <div class="p-card teal">
+                        <div class="row"><span style="font-size:22px">🚗</span>
+                          <div><div class="k">Your car</div><div class="v big">Level 2 · Bay 44 · 3 min walk</div></div>
+                        </div>
+                        <div class="mini">Exit gate opens automatically — your pass stays on your phone.</div>
+                      </div>
+                      <div class="actions">
+                        <button class="btn primary" data-action="next">Guide me to my car</button>
+                      </div>
+                    </div>
+
+                    <!-- SCREEN 8 — Review -->
+                    <div class="screen" data-screen="7">
+                      <h2>Rate your night</h2>
+                      <p class="lead">One last tap before you head home.</p>
+                      <div class="stars" id="stars">
+                        <span class="st" data-s="1">★</span><span class="st" data-s="2">★</span>
+                        <span class="st" data-s="3">★</span><span class="st" data-s="4">★</span><span class="st" data-s="5">★</span>
+                      </div>
+                      <div class="p-card teal" id="reviewDone" style="display:none">
+                        <div class="v" style="text-align:center">Memory saved 💚</div>
+                        <div class="mini" style="text-align:center">Thanks — see you at the next one. Your pass for tonight is saved to your wallet.</div>
+                      </div>
+                      <div class="actions">
+                        <button class="btn ghost" data-action="restart">↺ Replay the journey</button>
+                      </div>
+                    </div>
+
+                  </div><!-- /screens -->
+                </div>
+              </div>
+            </div>
+
+            <!-- side rail: the 8-step journey legend (outside the phone) -->
+            <aside class="side-rail" id="sideRail">
+              <div class="rail-title">The journey · 8 steps</div>
+              <!-- rail steps injected by app.js -->
+            </aside>
+          </div>
+        </section>
+
+        <!-- ---------- ORGANIZER MODE ---------- -->
+        <section class="mode-panel" id="panel-organizer">
+          <div class="dash">
+            <div class="dash-head">
+              <div>
+                <h2>Command Center</h2>
+                <div class="sub">Coldplay · DY Patil Stadium · 52,000 capacity</div>
+              </div>
+              <div class="live"><span class="d"></span> LIVE · <span id="dashClock">21:58</span></div>
+            </div>
+
+            <div class="dash-grid">
+
+              <!-- Heatmap -->
+              <div class="d-card span-2" data-panel="0">
+                <div class="dc-head"><span class="ic">🗺️</span><h3>Live crowd heatmap</h3><span class="badge">real-time positioning</span></div>
+                <div class="heat" id="heat"><!-- cells injected --></div>
+                <div class="heat-legend">
+                  <span class="sw"><span class="box" style="background:#3FA76B"></span> Comfortable</span>
+                  <span class="sw"><span class="box" style="background:#E8963A"></span> Filling</span>
+                  <span class="sw"><span class="box" style="background:#D64545"></span> Congested</span>
+                  <span style="margin-left:auto">Updates every 5s · simulated</span>
+                </div>
+              </div>
+
+              <!-- Occupancy meters -->
+              <div class="d-card" data-panel="1">
+                <div class="dc-head"><span class="ic">📶</span><h3>Zone occupancy &amp; capacity</h3></div>
+                <div class="meter-list" id="meters"><!-- injected --></div>
+              </div>
+
+              <!-- Exit orchestration -->
+              <div class="d-card" data-panel="2">
+                <div class="dc-head"><span class="ic">🚦</span><h3>Exit orchestration</h3></div>
+                <div class="exit-ctl">
+                  <div class="status" id="exitStatus">All 52,000 guests still inside. Exit not yet released. Releasing everyone at once would gridlock the North ramp for ~2 hours.</div>
+                  <span class="wave-tag" id="waveTag" style="display:none">✓ Wave dispatched</span>
+                  <button class="btn amber" data-action="triggerWave">Trigger staggered exit wave</button>
+                  <div class="mini" style="color:var(--muted)">This is exactly what produces each attendee's smart-exit push — the two sides act together.</div>
+                </div>
+              </div>
+
+              <!-- Moment-of-truth alert feed -->
+              <div class="d-card" data-panel="3">
+                <div class="dc-head"><span class="ic">🛟</span><h3>Live alerts</h3><span class="badge">auto-recovery</span></div>
+                <div class="feed" id="feed"><!-- injected --></div>
+              </div>
+
+              <!-- Sponsor analytics -->
+              <div class="d-card" data-panel="4">
+                <div class="dc-head"><span class="ic">📈</span><h3>Sponsor analytics</h3><span class="badge">illustrative</span></div>
+                <div class="spon-grid">
+                  <div class="spon"><div class="n">41,280</div><div class="l">Foot-traffic to Food Court</div></div>
+                  <div class="spon"><div class="n">2h 14m</div><div class="l">Avg. dwell time</div></div>
+                  <div class="spon"><div class="n">Zone C</div><div class="l">Top sponsor engagement</div></div>
+                  <div class="spon"><div class="n">Ready</div><div class="l">ROI proof report</div></div>
+                </div>
+                <div class="mini" style="margin-top:10px;color:var(--muted)">Net-new revenue stream — needs the positioning data competitors can't collect.</div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /stage -->
+    </div><!-- /stage-wrap -->
+
+    <!-- ============ CAPTION STRIP — the narration layer (OUTSIDE the phone) ============ -->
+    <div class="caption-strip" id="captionStrip">
+      <span class="cap-phase" id="capPhase">Before</span>
+      <span class="cap-text" id="capText"></span>
+      <button class="cap-action" id="capAction" style="display:none"></button>
+    </div>
+
+    <!-- ============ BOTTOM NAV ============ -->
+    <nav class="navbar">
+      <button class="nav-btn" id="btnPrev">‹ Back</button>
+      <div class="dots" id="dots"></div>
+      <button class="nav-btn primary" id="btnNext">Next ›</button>
+    </nav>
+    <div class="kbd-hint"><kbd>←</kbd> <kbd>→</kbd> / <kbd>Space</kbd> to step · <kbd>F</kbd> fullscreen · tap any button on the phone to explore freely</div>
+
+  </div>
+
+  <div id="toast"><span class="ic"></span><span id="toastText"></span></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
