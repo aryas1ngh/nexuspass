@@ -2,10 +2,127 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="0; url=slides/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NexusPass — Milestone 2</title>
+  <style>
+    :root{
+      --bg:#FAFAF7; --bg-grad:#F2F1EA; --ink:#161B29; --ink-soft:#4A5163; --muted:#9199AB;
+      --teal:#00A896; --teal-deep:#0a6d62; --teal-soft:#E1F4F1;
+      --amber:#E8963A; --amber-deep:#9a5e12; --amber-soft:#FBEEDD;
+      --card:#FFFFFF; --line:#E7E7DF;
+      --shadow:0 4px 18px rgba(20,25,45,.07),0 1px 4px rgba(20,25,45,.05);
+      --shadow-lg:0 14px 40px rgba(20,25,45,.12);
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;min-height:100%;}
+    body{
+      font-family:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(760px 620px at 100% -8%, rgba(0,168,150,.14), transparent 60%),
+        radial-gradient(680px 560px at -6% 108%, rgba(232,150,58,.14), transparent 60%),
+        radial-gradient(120% 120% at 100% 0%, #FFFFFF 0%, var(--bg) 42%, var(--bg-grad) 100%);
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:40px 22px; -webkit-font-smoothing:antialiased; position:relative; overflow-x:hidden;
+    }
+    body::before{ /* dot-grid texture, faded at center (matches the deck) */
+      content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:radial-gradient(circle, rgba(0,168,150,.16) 1.5px, transparent 1.9px);
+      background-size:30px 30px;
+      -webkit-mask-image:radial-gradient(ellipse 82% 80% at 50% 42%, transparent 30%, #000 92%);
+              mask-image:radial-gradient(ellipse 82% 80% at 50% 42%, transparent 30%, #000 92%);
+    }
+    .wrap{ position:relative; z-index:1; width:100%; max-width:860px; text-align:center; }
+
+    .logo{ width:132px; height:auto; display:block; margin:0 auto 22px; }
+    .eyebrow{ color:var(--teal-deep); font-size:12.5px; font-weight:800; letter-spacing:.18em;
+      text-transform:uppercase; margin:0 0 10px; }
+    h1{ font-size:clamp(34px,6vw,52px); font-weight:800; letter-spacing:-.02em; margin:0 0 8px; line-height:1.08; }
+    .tag{ color:var(--ink-soft); font-size:clamp(15px,2.4vw,19px); font-weight:500; margin:0 0 4px; }
+    .tag .hl{ color:var(--teal-deep); font-weight:700; }
+    .course{ color:var(--muted); font-size:13.5px; font-weight:600; margin:0; }
+
+    .menu{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:38px 0 34px; }
+    .option{
+      display:flex; flex-direction:column; align-items:flex-start; gap:12px; text-align:left;
+      background:var(--card); border:1px solid var(--line); border-radius:20px; padding:26px 24px;
+      box-shadow:var(--shadow); text-decoration:none; color:inherit; position:relative; overflow:hidden;
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .option::after{ content:""; position:absolute; left:0; top:0; height:100%; width:5px; }
+    .option:hover{ transform:translateY(-5px); box-shadow:var(--shadow-lg); }
+    .option .ic{
+      width:56px; height:56px; border-radius:15px; display:flex; align-items:center; justify-content:center;
+      font-size:28px; box-shadow:var(--shadow);
+    }
+    .option h2{ margin:0; font-size:21px; letter-spacing:-.01em; }
+    .option p{ margin:0; font-size:14px; color:var(--ink-soft); line-height:1.5; }
+    .option .go{ margin-top:6px; font-size:13.5px; font-weight:800; display:inline-flex; align-items:center; gap:7px; }
+
+    .option.slides::after{ background:var(--teal); }
+    .option.slides:hover{ border-color:var(--teal); }
+    .option.slides .ic{ background:var(--teal-soft); }
+    .option.slides .go{ color:var(--teal-deep); }
+
+    .option.proto::after{ background:var(--amber); }
+    .option.proto:hover{ border-color:var(--amber); }
+    .option.proto .ic{ background:var(--amber-soft); }
+    .option.proto .go{ color:var(--amber-deep); }
+    .option .badge{ position:absolute; top:16px; right:16px; font-size:10px; font-weight:800; text-transform:uppercase;
+      letter-spacing:.05em; color:var(--amber-deep); background:var(--amber-soft); padding:4px 10px; border-radius:20px; }
+
+    .team{ background:rgba(255,255,255,.6); border:1px solid var(--line); border-radius:18px; padding:20px 22px;
+      backdrop-filter:blur(4px); box-shadow:var(--shadow); }
+    .team .lbl{ font-size:11.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+    .names{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+    .name{ display:inline-flex; align-items:center; gap:9px; background:var(--card); border:1px solid var(--line);
+      border-radius:22px; padding:8px 15px 8px 8px; font-size:14px; font-weight:700; color:var(--ink); box-shadow:var(--shadow); }
+    .name .av{ width:26px; height:26px; border-radius:50%; background:var(--teal); color:#fff; font-size:12px; font-weight:800;
+      display:flex; align-items:center; justify-content:center; }
+    .name:nth-child(2) .av{ background:var(--amber); }
+    .name:nth-child(3) .av{ background:var(--teal-deep); }
+    .name:nth-child(4) .av{ background:var(--amber-deep); }
+
+    .foot{ margin-top:24px; color:var(--muted); font-size:12.5px; font-weight:600; }
+
+    @media (max-width:640px){ .menu{ grid-template-columns:1fr; } }
+  </style>
 </head>
 <body>
-  <p>Redirecting to the <a href="slides/">NexusPass deck</a>…</p>
+  <main class="wrap">
+    <img class="logo" src="slides/assets/nexuspass.png" alt="NexusPass logo" />
+    <p class="eyebrow">Group 15 · Milestone 2</p>
+    <h1>NexusPass</h1>
+    <p class="tag">Designing the Service Engine — <span class="hl">one pass, the whole in-venue journey</span></p>
+    <p class="course">ENT307 — Marketing of Services</p>
+
+    <nav class="menu">
+      <a class="option slides" href="slides/">
+        <div class="ic">🎞️</div>
+        <h2>The Slide Deck</h2>
+        <p>The full Milestone 2 presentation — problem, STP, service blueprint, moments of truth, pricing and frameworks.</p>
+        <span class="go">Open the deck →</span>
+      </a>
+      <a class="option proto" href="prototype/">
+        <span class="badge">Interactive</span>
+        <div class="ic">📱</div>
+        <h2>Prototype Walkthrough</h2>
+        <p>Clickable attendee app + organizer dashboard, with a hands-free auto-play walkthrough of the whole service.</p>
+        <span class="go">Launch the walkthrough →</span>
+      </a>
+    </nav>
+
+    <section class="team">
+      <div class="lbl">The Team</div>
+      <div class="names">
+        <span class="name"><span class="av">AS</span> Arya Singh</span>
+        <span class="name"><span class="av">AK</span> Ashil Krishna P S</span>
+        <span class="name"><span class="av">VS</span> V Shanmukha S R</span>
+        <span class="name"><span class="av">YA</span> Yeshwanth Agithe</span>
+      </div>
+    </section>
+
+    <p class="foot">NexusPass · Group 15 — ENT307, Marketing of Services</p>
+  </main>
 </body>
 </html>
